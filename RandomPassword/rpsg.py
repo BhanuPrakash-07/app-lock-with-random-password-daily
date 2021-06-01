@@ -7,11 +7,13 @@ from tkinter import PhotoImage
 top=tkinter.Tk()
 top.geometry('400x400')
 var1=tkinter.StringVar()
-prev='02'
+prev='12'
 def cur_time():
     import requests as req
-    return req.get('http://worldtimeapi.org/api/timezone/Asia/Kolkata.txt').text[53:72]
-print(cur_time())
+    tot=req.get('http://worldtimeapi.org/api/timezone/Asia/Kolkata.txt').text
+    loc=tot.find('2021')
+    return tot[loc:loc+10]
+print('Current Date: ',cur_time())
 def gen():
     import string
     s=''
@@ -22,18 +24,18 @@ def gen():
     return s
 pw=gen()
 i=PhotoImage(file=r'B:\Python\ML\MiniProjects\RandomPassword\image.png')
-print(pw)
+print('Password: ',pw)
 def verification():
     import os
     global prev
     name=var1.get()
     now=cur_time()
-    if(now[8:10]!=prev):
+    if(now[-2:]!=prev):
         if name==pw:
+            prev=now[-2:]
             p=subprocess.call(r'C:\Program Files (x86)\Mozilla Firefox\firefox.exe')
-            time.sleep(10)
+            time.sleep(20) #after 20 secs automatically app closed
             os.system('taskkill /im firefox.exe /f')
-            prev=now[8:10]
         else:
             print('incorrect')
     else:
